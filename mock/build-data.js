@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const config = {
+    ...require('./api/pokemons'),
     ...require('./api/pokemon')
 };
 

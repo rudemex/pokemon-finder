@@ -1,4 +1,5 @@
 {
     "/api/*": "/$1",
+    "/api/pokemons": "/pokemons"
     "/api/pokemon/*": "/pokemon/$1"
 }

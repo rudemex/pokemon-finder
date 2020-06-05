@@ -26,6 +26,8 @@ module.exports = function (app) {
      *              type: number
      *          name:
      *              type: string
+     *          description:
+     *              type: string
      *          image:
      *              type: string
      *          types:
@@ -76,14 +78,23 @@ module.exports = function (app) {
                         const resp = JSON.parse(response.body);
                         logger.info('[i] POKEMON RESPONSE: ',resp);
 
-                        let response_request = {
-                            "id": resp.id,
-                            "name": resp.forms[0].name,
-                            "image": `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${functions.padDigits(resp.id,3)}.png`,
-                            "types": resp.types.map( item => item.type.name )
-                        };
-                        //res.status(200).send( xss( JSON.stringify(response_request) ) );
-                        res.status(200).send( response_request );
+                        getPokemonDescription(resp.id).then( respDescription => {
+                            logger.info('[i] POKEMON RESPONSE DESCRIPTION: ',respDescription);
+
+                            let response_request = {
+                                "id": resp.id,
+                                "name": resp.forms[0].name,
+                                "description": respDescription,
+                                "image": `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${functions.padDigits(resp.id,3)}.png`,
+                                "types": resp.types.map( item => item.type.name )
+                            };
+                            //res.status(200).send( xss( JSON.stringify(response_request) ) );
+                            res.status(200).send( response_request );
+                        }).catch( error => {
+                            logger.error('error: ', error);
+                            res.status(409).send({error_message: `Error inesperado: ${error}`});
+                        })
+
                     } else {
                         logger.error('error response: ', error);
                         res.status(409).send(error);
@@ -98,4 +109,23 @@ module.exports = function (app) {
             res.status(409).send({error_message: `Error inesperado: ${error}`});
         }
     });
+
+    const getPokemonDescription = async (id) => {
+        const url = encodeURI(`${pokeapi}/pokemon-species/${id}/`);
+        logger.info('[i] POKEMON SPECIES URL: ',url);
+
+        return new Promise((resolve, reject) => {
+            request(url, (error, response, body) => {
+                const resp = JSON.parse(response.body);
+                //logger.info('[i] POKEMON SPECIES RESPONSE: ',resp);
+                if (!error && response && response.statusCode == 200) {
+                    resolve(resp.flavor_text_entries[0].flavor_text.replace(/\r?\n|\f|\r/g, " "));
+                } else {
+                    logger.error(error);
+                    reject('')
+                }
+            });
+        });
+
+    }
 };

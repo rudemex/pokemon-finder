@@ -11,6 +11,8 @@
     "pokeapi": "POKEAPI_URL"
   },
   "params": {
+    "limit": "LIMIT_LIST",
+    "offset": "OFFSET_PAGINATION"
   },
   "swagger":{
     "enabled":"SWAGGER_ENABLED"

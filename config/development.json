@@ -11,6 +11,8 @@
     "pokeapi": "https://pokeapi.co/api/v2/"
   },
   "params": {
+    "limit": 1000,
+    "offset": 0
   },
   "swagger": {
     "enabled": true

@@ -10,6 +10,7 @@ const functions = require('../utils/functions');
 module.exports = function (app) {
     const serverConfig = config.get('server');
     const servicesConfig=config.get('services');
+    const paramsConfig=config.get('params');
     const context = serverConfig.context;
     const pokeapi = servicesConfig.pokeapi;
 
@@ -19,6 +20,24 @@ module.exports = function (app) {
     /**
      * @swagger
      * definitions:
+     *   pokemons:
+     *      type: object
+     *      properties:
+     *          count:
+     *              type: number
+     *          next:
+     *              type: string
+     *          previous:
+     *              type: string
+     *          results:
+     *              type: array
+     *              items:
+     *                  type: object
+     *                  properties:
+     *                      name:
+     *                          type: string
+     *                      url:
+     *                          type: string
      *   pokemon:
      *      type: object
      *      properties:
@@ -38,12 +57,74 @@ module.exports = function (app) {
 
     /**
      * @swagger
+     * /pokemons:
+     *   get:
+     *     tags:
+     *       - Pokemon
+     *     name: Obtiene todos los pokemons.
+     *     summary: Obtiene todos los pokemons.
+     *     security:
+     *       - bearerAuth: []
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: limit
+     *         in: query
+     *         type: int
+     *         required: false
+     *       - name: offset
+     *         in: query
+     *         type: int
+     *         required: false
+     *     responses:
+     *       '200':
+     *          description: Consulta satisfactoria.
+     *          schema:
+     *              $ref: '#/definitions/pokemons'
+     *       '409':
+     *          description: Error generico.
+     *       '5xx':
+     *          description: Error generico en el servidor
+     */
+
+    app.get(encodeURI(context + "/pokemons"), async (req, res) => {
+        const limit = req.query.limit || paramsConfig.limit;
+        const offset = req.query.offset || paramsConfig.offset;
+        logger.info('[i] ENDPOINT POKEMONS');
+
+        if (limit !== null && limit !== undefined && offset !== null && offset !== undefined) {
+            const url = encodeURI(`${pokeapi}/pokemon?limit=${ parseInt(limit) }&offset=${ parseInt(offset) }`);
+            request(url,(error, response, body) => {
+                try {
+                    if (!error && response.statusCode == 200 && body !== '') {
+                        const resp = JSON.parse(response.body);
+                        //logger.info('[i] POKEMON RESPONSE: ',resp);
+                        res.status(200).send( resp );
+                    } else {
+                        logger.error('error response: ', error);
+                        res.status(409).send(error);
+                    }
+                } catch (error) {
+                    logger.error('error: ', error);
+                    res.status(409).send({error_message: `Error inesperado: ${error}`});
+                }
+            });
+        }else{
+            logger.error('error: ', error);
+            res.status(409).send({error_message: `Error inesperado: ${error}`});
+        }
+    });
+
+    /**
+     * @swagger
      * /pokemon/{name}:
      *   get:
      *     tags:
      *       - Pokemon
-     *     name: Obtención del pokemon por nombre.
-     *     summary: Obtención del pokemon por nombre
+     *     name: Obtiene el pokemon por nombre/nro de pokemon.
+     *     summary: Obtiene el pokemon por nombre/nro de pokemon
      *     security:
      *       - bearerAuth: []
      *     consumes:
@@ -54,7 +135,7 @@ module.exports = function (app) {
      *       - name: name
      *         in: path
      *         type: string
-     *         required: false
+     *         required: true
      *     responses:
      *       '200':
      *          description: Consulta satisfactoria.
@@ -128,4 +209,6 @@ module.exports = function (app) {
         });
 
     }
+
+    //let data = functions.filterResponse(resp.results, 'name', 'pik');
 };

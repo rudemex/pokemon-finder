@@ -1,0 +1,8 @@
+SERVER_PORT=8080
+CONTEXT_NAME=/api
+ORIGINS_ALLOWED=http://localhost:3000,http://localhost:3001
+ORIGINS_READ_ONLY=
+SWAGGER_ENABLED=true
+TZ=America/Argentina/Buenos_Aires
+CORS_ENABLED=true
+POKEAPI_URL=https://pokeapi.co/api/v2/

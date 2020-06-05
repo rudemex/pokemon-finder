@@ -1,0 +1,18 @@
+{
+  "server": {
+    "port": 8080,
+    "context": "/api",
+    "origins": "http://localhost:3000,http://localhost:3001",
+    "originsReadOnly": "http://localhost:3001",
+    "corsEnabled": false,
+    "tz": "America/Argentina/Buenos_Aires"
+  },
+  "services": {
+    "pokeapi": "https://pokeapi.co/api/v2/"
+  },
+  "params": {
+  },
+  "swagger": {
+    "enabled": true
+  }
+}

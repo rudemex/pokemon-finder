@@ -1,0 +1,18 @@
+{
+  "server": {
+    "port": "SERVER_PORT",
+    "context":"CONTEXT_NAME",
+    "origins":"ORIGINS_ALLOWED",
+    "originsReadOnly":"ORIGINS_READ_ONLY",
+    "corsEnabled": "CORS_ENABLED",
+    "tz": "TZ"
+  },
+  "services": {
+    "pokeapi": "POKEAPI_URL"
+  },
+  "params": {
+  },
+  "swagger":{
+    "enabled":"SWAGGER_ENABLED"
+  }
+}

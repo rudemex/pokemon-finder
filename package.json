@@ -1,0 +1,39 @@
+{
+  "name": "pokemon-finder",
+  "version": "1.0.0",
+  "description": "Pokemon finder",
+  "scripts": {
+    "local": " SET SERVER_PORT=8080  && nodemon run start-server",
+    "mock-server": "node mock/build-data && mock-json-server data.json --port 3003",
+    "start-server": "nodemon server.js",
+    "start": "nodemon --inspect=0.0.0.0:9228 ./server.js",
+    "build": "node -v",
+    "test": "node -v",
+    "lint": "node -v"
+  },
+  "author": "@rudemex",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "babel-plugin-idx": "^2.4.0",
+    "body-parser": "^1.18.3",
+    "config": "^3.0.1",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "csurf": "^1.10.0",
+    "express": "^4.16.4",
+    "idx": "^2.5.6",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.25",
+    "request": "^2.88.0",
+    "swagger-jsdoc": "^3.2.9",
+    "swagger-ui-express": "^4.0.2",
+    "tracer": "^1.0.0",
+    "xss": "^1.0.6"
+  },
+  "devDependencies": {
+    "json-server": "^0.16.1",
+    "mock-json-server": "^1.3.2",
+    "nodemon": "^1.18.10"
+  }
+}

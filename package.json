@@ -26,6 +26,7 @@
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.25",
     "request": "^2.88.0",
+    "signale": "^1.4.0",
     "swagger-jsdoc": "^3.2.9",
     "swagger-ui-express": "^4.0.2",
     "tracer": "^1.0.0",

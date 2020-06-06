@@ -1,18 +1,18 @@
-const logger = require('tracer').colorConsole();
 const config = require('config');
 const bodyParser = require('body-parser');
 const request = require('request');
 const xss = require("xss");
-const idx = require('idx');
 const functions = require('../utils/functions');
 
 
-module.exports = function (app) {
+module.exports = function (app, signale) {
     const serverConfig = config.get('server');
     const servicesConfig=config.get('services');
     const paramsConfig=config.get('params');
+
     const context = serverConfig.context;
     const pokeapi = servicesConfig.pokeapi;
+
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,12 +57,59 @@ module.exports = function (app) {
 
     /**
      * @swagger
+     * /search:
+     *   get:
+     *     tags:
+     *       - Pokemon
+     *     name: Busca el pokemon por nombre/nro de pokemon.
+     *     summary: Busca el pokemon por nombre/nro de pokemon
+     *     security:
+     *       - bearerAuth: []
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: search
+     *         in: query
+     *         type: string
+     *         required: true
+     *     responses:
+     *       '200':
+     *          description: Consulta satisfactoria.
+     *          schema:
+     *              $ref: '#/definitions/pokemon'
+     *       '400':
+     *          description: Bad request.
+     *       '409':
+     *          description: Error generico.
+     *       '5xx':
+     *          description: Error generico en el servidor
+     */
+    app.get(encodeURI(context + "/search"), async (req, res) => {
+        const search = req.query.search;
+
+        if (search !== null && search !== undefined) {
+            try{
+                res.status(200).send( 'ok' );
+            }catch{
+                signale.error('error: ');
+                res.status(409).send('error');
+            }
+        }else{
+            signale.error('Bad Request');
+            res.status(400).send({error_message: `Bad Request`});
+        }
+    });
+
+    /**
+     * @swagger
      * /pokemons:
      *   get:
      *     tags:
      *       - Pokemon
-     *     name: Obtiene todos los pokemons.
-     *     summary: Obtiene todos los pokemons.
+     *     name: Obtiene todos los pokemones.
+     *     summary: Obtiene todos los pokemones.
      *     security:
      *       - bearerAuth: []
      *     consumes:
@@ -83,16 +130,17 @@ module.exports = function (app) {
      *          description: Consulta satisfactoria.
      *          schema:
      *              $ref: '#/definitions/pokemons'
+     *       '400':
+     *          description: Bad request.
      *       '409':
      *          description: Error generico.
      *       '5xx':
      *          description: Error generico en el servidor
      */
-
     app.get(encodeURI(context + "/pokemons"), async (req, res) => {
         const limit = req.query.limit || paramsConfig.limit;
         const offset = req.query.offset || paramsConfig.offset;
-        logger.info('[i] ENDPOINT POKEMONS');
+        signale.info('ENDPOINT POKEMONS');
 
         if (limit !== null && limit !== undefined && offset !== null && offset !== undefined) {
             const url = encodeURI(`${pokeapi}/pokemon?limit=${ parseInt(limit) }&offset=${ parseInt(offset) }`);
@@ -100,20 +148,20 @@ module.exports = function (app) {
                 try {
                     if (!error && response.statusCode == 200 && body !== '') {
                         const resp = JSON.parse(response.body);
-                        //logger.info('[i] POKEMON RESPONSE: ',resp);
+                        signale.success('GET ALL POKEMONES');
                         res.status(200).send( resp );
                     } else {
-                        logger.error('error response: ', error);
+                        signale.error('error response: ', error);
                         res.status(409).send(error);
                     }
                 } catch (error) {
-                    logger.error('error: ', error);
+                    signale.error('error: ', error);
                     res.status(409).send({error_message: `Error inesperado: ${error}`});
                 }
             });
         }else{
-            logger.error('error: ', error);
-            res.status(409).send({error_message: `Error inesperado: ${error}`});
+            signale.error('Bad Request');
+            res.status(400).send({error_message: `Bad Request`});
         }
     });
 
@@ -141,15 +189,16 @@ module.exports = function (app) {
      *          description: Consulta satisfactoria.
      *          schema:
      *              $ref: '#/definitions/pokemon'
+     *       '400':
+     *          description: Bad request.
      *       '409':
      *          description: Error generico.
      *       '5xx':
      *          description: Error generico en el servidor
      */
-
     app.get(encodeURI(context + "/pokemon/:name"), async (req, res) => {
         const name = req.params.name;
-        logger.info('[i] ENDPOINT POKEMON BY NAME');
+        signale.info('ENDPOINT POKEMON BY NAME');
 
         if (name !== null && name !== undefined) {
             const url = encodeURI(`${pokeapi}/pokemon/${name}`);
@@ -157,11 +206,10 @@ module.exports = function (app) {
                 try {
                     if (!error && response.statusCode == 200 && body !== '') {
                         const resp = JSON.parse(response.body);
-                        logger.info('[i] POKEMON RESPONSE: ',resp);
+                        signale.success('GET POKEMON BY NAME/NRO POKEMON');
 
                         getPokemonDescription(resp.id).then( respDescription => {
-                            logger.info('[i] POKEMON RESPONSE DESCRIPTION: ',respDescription);
-
+                            signale.success(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
                             let response_request = {
                                 "id": resp.id,
                                 "name": resp.forms[0].name,
@@ -172,37 +220,37 @@ module.exports = function (app) {
                             //res.status(200).send( xss( JSON.stringify(response_request) ) );
                             res.status(200).send( response_request );
                         }).catch( error => {
-                            logger.error('error: ', error);
+                            signale.error('error: ', error);
                             res.status(409).send({error_message: `Error inesperado: ${error}`});
                         })
 
                     } else {
-                        logger.error('error response: ', error);
+                        signale.error('error response: ', error);
                         res.status(409).send(error);
                     }
                 } catch (error) {
-                    logger.error('error: ', error);
+                    signale.error('error: ', error);
                     res.status(409).send({error_message: `Error inesperado: ${error}`});
                 }
             });
         }else{
-            logger.error('error: ', error);
-            res.status(409).send({error_message: `Error inesperado: ${error}`});
+            signale.error('Bad Request');
+            res.status(400).send({error_message: `Bad Request`});
         }
     });
 
     const getPokemonDescription = async (id) => {
         const url = encodeURI(`${pokeapi}/pokemon-species/${id}/`);
-        logger.info('[i] POKEMON SPECIES URL: ',url);
+        signale.info('POKEMON SPECIES URL: ',url);
 
         return new Promise((resolve, reject) => {
             request(url, (error, response, body) => {
                 const resp = JSON.parse(response.body);
-                //logger.info('[i] POKEMON SPECIES RESPONSE: ',resp);
+                signale.success('GET DESCRIPTION OF POKEMON');
                 if (!error && response && response.statusCode == 200) {
                     resolve(resp.flavor_text_entries[0].flavor_text.replace(/\r?\n|\f|\r/g, " "));
                 } else {
-                    logger.error(error);
+                    signale.error(error);
                     reject('')
                 }
             });

@@ -5,10 +5,24 @@ const csrf = require('csurf');
 const routes = require("./routes/routes");
 const config = require('config');
 const swagger = require("./swagger");
-const logger = require('tracer').colorConsole();
+const {Signale} = require('signale');
 const pjson = require('./package.json');
-
 const cors = require('cors');
+
+const optionsSignale={
+    types:{
+        debug:{
+            color:"blue",
+        },
+        info:{
+            badge: "[i]",
+            color:"cyan",
+            label: 'info',
+            logLevel: 'info'
+        }
+    }
+};
+const signale = new Signale(optionsSignale);
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,16 +36,16 @@ app.use(function (req, res, next) {
     const output_reqBody = {
         output: req.body
     };
-    logger.info(`Interceptor: REQUEST to `, encodeURI(req.url));
-    logger.info(`Interceptor: REQUEST HEADERS `, output_reqHeaders);
-    logger.info(`Interceptor: REQUEST BODY `, output_reqBody);
+    signale.debug(`Interceptor: REQUEST to `, encodeURI(req.url));
+    signale.debug(`Interceptor: REQUEST HEADERS `, output_reqHeaders);
+    signale.debug(`Interceptor: REQUEST BODY `, output_reqBody);
 
     let whitelist = serverConfig.origins;
     let origin = req.headers.origin;
 
     //res.cookie('XSRF-TOKEN', req.csrfToken());
     //res.locals.csrftoken = req.csrfToken();
-    //logger.info(`CSRF TOKEN: ${req.csrfToken()} `);
+    //signale.debug(`CSRF TOKEN: ${req.csrfToken()} `);
 
     if (serverConfig.corsEnabled && whitelist.indexOf(origin) > -1) {
         //res.setHeader('Access-Control-Allow-Origin', origin);
@@ -60,13 +74,13 @@ const cors_options_disabled = {
     allowedHeaders: "Content-Type,Authorization,Set-Cookie,Access-Control-Allow-Origin,Cache-Control,Pragma,id_channel"
 };
 
-//logger.info("Using config: ", config);
+//signale.debug("Using config: ", config);
 
 if (serverConfig.corsEnabled) {
-    logger.info("Using cors config: ", cors_options_enabled);
+    signale.debug("Using cors config: ", cors_options_enabled);
     //app.use(cors(cors_options_enabled));
 } else {
-    logger.info("Using cors config: ", cors_options_disabled);
+    signale.debug("Using cors config: ", cors_options_disabled);
     app.use(cors(cors_options_disabled));
 }
 
@@ -82,12 +96,12 @@ app.use(bodyParser.urlencoded({
 /*app.all('*', function (req, res) {
     res.cookie('XSRF-TOKEN', req.csrfToken());
     res.locals.csrftoken = req.csrfToken();
-    logger.info(`CSRF TOKEN: ${req.csrfToken()} `);
+    signale.debug(`CSRF TOKEN: ${req.csrfToken()} `);
 })*/
 const port = parseInt(serverConfig.port, 10) || 8080;
-routes(app, pjson.version);
+routes(app, pjson.version, signale);
 
 app.listen(port, () => {
-    logger.info(`App running on port:`, port);
-    logger.info(`Version: ${pjson.version}`);
+    signale.success(`App running on port:`, port);
+    signale.success(`Version: ${pjson.version}`);
 });

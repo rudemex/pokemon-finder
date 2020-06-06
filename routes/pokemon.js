@@ -90,7 +90,7 @@ module.exports = function (app, signale) {
      *       '5xx':
      *          description: Error generico en el servidor
      */
-    app.get(encodeURI(context + "/search"), async (req, res) => {
+    app.get(encodeURI(context + "/search"), (req, res) => {
         const search = req.query.search;
 
         if (search !== null && search !== undefined) {
@@ -155,7 +155,7 @@ module.exports = function (app, signale) {
      *       '5xx':
      *          description: Error generico en el servidor
      */
-    app.get(encodeURI(context + "/pokemons"), async (req, res) => {
+    app.get(encodeURI(context + "/pokemons"), (req, res) => {
         const limit = req.query.limit || paramsConfig.limit;
         const offset = req.query.offset || paramsConfig.offset;
         signale.info('ENDPOINT POKEMONS');
@@ -214,7 +214,7 @@ module.exports = function (app, signale) {
      *       '5xx':
      *          description: Error generico en el servidor
      */
-    app.get(encodeURI(context + "/pokemon/:name"), async (req, res) => {
+    app.get(encodeURI(context + "/pokemon/:name"), (req, res) => {
         const name = req.params.name;
         signale.info('ENDPOINT POKEMON BY NAME');
 
@@ -226,7 +226,7 @@ module.exports = function (app, signale) {
                         const resp = JSON.parse(response.body);
                         signale.success('GET POKEMON BY NAME/NRO POKEMON');
 
-                        getPokemonDescription(resp.id).then( respDescription => {
+                        getPokemonDescription(resp.species.url).then( respDescription => {
                             signale.success(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
                             let response_request = {
                                 "id": resp.id,
@@ -257,7 +257,7 @@ module.exports = function (app, signale) {
         }
     });
 
-    const searchPokemon = async (name) => {
+    const searchPokemon = (name) => {
         const url = encodeURI(`${pokeapi}pokemon/${name}`);
         signale.info('SEARCH POKEMON URL: ',url);
         return new Promise((resolve, reject) => {
@@ -280,7 +280,6 @@ module.exports = function (app, signale) {
                             resolve(response_request)
                         }).catch( error => {
                             signale.error('Error: ', error);
-                            //reject({error_message: `Error inesperado: ${error}`});
                             reject(null);
                         })
 
@@ -296,7 +295,7 @@ module.exports = function (app, signale) {
         });
     }
 
-    const searchAdvancePokemon = async (name, limit= paramsConfig.limit, offset = paramsConfig.offset ) => {
+    const searchAdvancePokemon = (name, limit= paramsConfig.limit, offset = paramsConfig.offset ) => {
         const url = encodeURI(`${pokeapi}/pokemon?limit=${ parseInt(limit) }&offset=${ parseInt(offset) }`);
         signale.info('SEARCH POKEMONS URL: ',url);
 
@@ -306,20 +305,25 @@ module.exports = function (app, signale) {
                     if (!error && response.statusCode == 200 && body !== '') {
                         const resp = JSON.parse(response.body);
                         signale.success('GET ALL POKEMONES');
-                        //signale.debug(resp);
 
                         let dataFilter = functions.filterResponse(resp.results, 'name', name);
 
-                        let data = dataFilter.map( item => {
+                        dataFilter.map( (item,i) => {
+                            signale.debug("POKEMON NAME: ",item.name);
+                            item.desc = "test";
+
                             searchPokemon(item.name).then( r => {
-                                console.log(r);
-                                resolve(r);
+                                console.log("ITEM",r);
+                                return r;
+                                //resolve(r);
                             }).catch( e => {
                                 signale.error("fail promise search");
                                 reject(null)
-                            })
+                            });
                         });
-                        setTimeout(() => resolve(data), 1000)
+
+                        signale.info("DATAFILTER: ",dataFilter);
+                        resolve(dataFilter);
                     } else {
                         signale.error('error response: ', error);
                         reject(error);
@@ -332,7 +336,7 @@ module.exports = function (app, signale) {
         });
     }
 
-    const getPokemonDescription = async (urlSpecie) => {
+    const getPokemonDescription = (urlSpecie) => {
         const url = encodeURI(`${urlSpecie}`);
         signale.info('POKEMON SPECIES URL: ',url);
 
@@ -348,8 +352,6 @@ module.exports = function (app, signale) {
                 }
             });
         });
-
     }
 
-    //
 };

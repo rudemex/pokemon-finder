@@ -8,7 +8,8 @@ module.exports = {
                 "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png",
                 "types": [
                     "electric"
-                ]
+                ],
+                "url": "https://pokeapi.co/api/v2/pokemon/25/"
             }
         ]
     }

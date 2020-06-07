@@ -39,22 +39,24 @@ module.exports = function (app, signale) {
      *                      url:
      *                          type: string
      *   pokemon:
-     *      type: object
-     *      properties:
-     *          id:
-     *              type: number
-     *          name:
-     *              type: string
-     *          description:
-     *              type: string
-     *          image:
-     *              type: string
-     *          types:
-     *              type: array
-     *              items:
+     *      type: array
+     *      items:
+     *          type: object
+     *          properties:
+     *              id:
+     *                  type: number
+     *              name:
      *                  type: string
-     *          url:
-     *              type: string
+     *              description:
+     *                  type: string
+     *              image:
+     *                  type: string
+     *              types:
+     *                  type: array
+     *                  items:
+     *                      type: string
+     *              url:
+     *                  type: string
      */
 
     /**
@@ -229,15 +231,17 @@ module.exports = function (app, signale) {
 
                         getPokemonDescription(resp.species.url).then( respDescription => {
                             signale.success(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
-                            let response_request = {
+                            let response_data = [];
+
+                            response_data.push({
                                 "id": resp.id,
                                 "name": resp.forms[0].name,
                                 "description": respDescription,
                                 "image": `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${functions.padDigits(resp.id,3)}.png`,
                                 "types": resp.types.map( item => item.type.name )
-                            };
-                            //res.status(200).send( xss( JSON.stringify(response_request) ) );
-                            res.status(200).send( response_request );
+                            });
+                            //res.status(200).send( xss( JSON.stringify(response_data) ) );
+                            res.status(200).send( response_data );
                         }).catch( error => {
                             signale.error('error 1: ', error);
                             res.status(409).send({error_message: `Error inesperado: ${error}`});
@@ -271,15 +275,16 @@ module.exports = function (app, signale) {
 
                         getPokemonDescription(resp.species.url).then( respDescription => {
                             signale.success(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
-                            let response_request = {
+                            let response_data = [];
+                            response_data.push({
                                 "id": resp.id,
                                 "name": resp.name,
                                 "description": respDescription,
                                 "image": `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${functions.padDigits(resp.id,3)}.png`,
                                 "types": resp.types.map( item => item.type.name ),
                                 "url": resp.forms[0].url
-                            };
-                            resolve(response_request)
+                            });
+                            resolve(response_data)
                         }).catch( error => {
                             signale.error('Error: ', error);
                             reject(null);
@@ -309,9 +314,9 @@ module.exports = function (app, signale) {
                         signale.success('GET ALL POKEMONES');
 
                         let dataFilter = functions.filterResponse(resp.results, 'name', name);
-                        getDataPokemon(dataFilter).then( r => {
-                            signale.info("RESULT: ",r);
-                            resolve(r);
+                        getDataPokemon(dataFilter).then( res => {
+                            signale.info("RESULT: ",res);
+                            resolve(res);
                         });
 
                     } else {
@@ -348,20 +353,19 @@ module.exports = function (app, signale) {
         return new Promise( (resolve, reject) => {
             try{
                 let response_data = [];
-
                 data.map( (item,i) => {
                     signale.debug("POKEMON NAME: ",item.name);
                     searchPokemon(item.name).then( r => {
                         console.log("R: ",r);
-                        response_data.push(r);
-                        return r;
+                        response_data.push(r[0]);
+                        return r[0];
                     }).catch( e => e);
                 });
 
                 setTimeout(() => {
                     signale.success("DATA: ",response_data)
                     resolve(response_data)
-                },500)
+                },1500)
             }catch{
                 reject();
             }

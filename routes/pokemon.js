@@ -91,9 +91,10 @@ module.exports = function (app, signale) {
      *          description: Error generico en el servidor
      */
     app.get(encodeURI(context + "/search"), (req, res) => {
-        const search = req.query.search;
+        const search = req.query.search.toLowerCase();
 
         if (search !== null && search !== undefined) {
+
             searchPokemon(search).then( resp => {
                 signale.debug("RESPONSE: ",resp);
 
@@ -260,6 +261,7 @@ module.exports = function (app, signale) {
     const searchPokemon = (name) => {
         const url = encodeURI(`${pokeapi}pokemon/${name}`);
         signale.info('SEARCH POKEMON URL: ',url);
+
         return new Promise((resolve, reject) => {
             request(url,(error, response, body) => {
                 try {
@@ -307,23 +309,11 @@ module.exports = function (app, signale) {
                         signale.success('GET ALL POKEMONES');
 
                         let dataFilter = functions.filterResponse(resp.results, 'name', name);
-
-                        dataFilter.map( (item,i) => {
-                            signale.debug("POKEMON NAME: ",item.name);
-                            item.desc = "test";
-
-                            searchPokemon(item.name).then( r => {
-                                console.log("ITEM",r);
-                                return r;
-                                //resolve(r);
-                            }).catch( e => {
-                                signale.error("fail promise search");
-                                reject(null)
-                            });
+                        getDataPokemon(dataFilter).then( r => {
+                            signale.info("RESULT: ",r);
+                            resolve(r);
                         });
 
-                        signale.info("DATAFILTER: ",dataFilter);
-                        resolve(dataFilter);
                     } else {
                         signale.error('error response: ', error);
                         reject(error);
@@ -348,10 +338,33 @@ module.exports = function (app, signale) {
                     resolve(resp.flavor_text_entries[0].flavor_text.replace(/\r?\n|\f|\r/g, " "));
                 } else {
                     signale.error(error);
-                    reject('')
+                    reject(null)
                 }
             });
         });
     }
 
+    const getDataPokemon =  (data) => {
+        return new Promise( (resolve, reject) => {
+            try{
+                let response_data = [];
+
+                data.map( (item,i) => {
+                    signale.debug("POKEMON NAME: ",item.name);
+                    searchPokemon(item.name).then( r => {
+                        console.log("R: ",r);
+                        response_data.push(r);
+                        return r;
+                    }).catch( e => e);
+                });
+
+                setTimeout(() => {
+                    signale.success("DATA: ",response_data)
+                    resolve(response_data)
+                },500)
+            }catch{
+                reject();
+            }
+        });
+    }
 };

@@ -1,0 +1,45 @@
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	margin-bottom: @footerH;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: @footerH;
+}
+
+@media (min-width: 768px) {
+	body {
+		margin-bottom: @footerH-768;
+	}
+
+	footer {
+		height: @footerH-768;
+	}
+}
+
+@media (min-width: 992px) {
+	body {
+		margin-bottom: @footerH-992;
+	}
+
+	footer {
+		height: @footerH-992;
+	}
+}
+
+@media (min-width: 1200px) {
+	body {
+		margin-bottom: @footerH-1200;
+	}
+
+	footer {
+		height: @footerH-1200;
+	}
+}

@@ -1,90 +1,126 @@
 <!DOCTYPE html>
 <html lang="en"><head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Pokemon finder">
-    <meta name="author" content="Rudemex">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pokemon Finder</title>
 
+    <meta name="robots" content="index, follow">
+    <meta name='rating' content='General'>
+    <meta name="description" content="Pokemon finder"/>
+    <meta name="keywords" content="pokemon, finder, pokedex"/>
+    <meta name="author" content="Maximiliano Delgado - @rudemex">
+
+    <!-- MODERNIZR -->
+    <!-- <script src="js/vendor/modernizr/modernizr.custom.45876.js"></script> -->
+    <!-- /MODERNIZR -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <style type="text/css">
-        /*0B5F73 - 0A4B5B - E44E4E - CC3C3C - 9c2c2c*/
-        .jumbotron{
-            margin: 0px;
-            border-radius: 0px;
-        }
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
 
-        footer .love {
-            color: red;
-        }
-    </style>
+    <!-- JS-DEBUG -->
+    <script>
+        var md = {};
+        md.debug = true;
+        md.server = "http://localhost:8080";
+    </script>
+    <!-- /JS-DEBUG -->
 </head>
-<body>
-<header>
-    <div class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                     width="40" height="40"
-                     viewBox="0 0 172 172"
-                     style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M48.73781,6.88c-5.99171,0 -10.89781,4.96317 -10.89781,10.95828v9.10391c-0.0614,0.37149 -0.0614,0.75054 0,1.12203v112.39797c-0.0614,0.37149 -0.0614,0.75054 0,1.12203v12.5775c0,5.99701 4.9061,10.95828 10.89781,10.95828h74.53109c5.98986,0 10.8911,-4.96317 10.8911,-10.95828v-12.5439c0.0614,-0.37149 0.0614,-0.75054 0,-1.12203v-112.39797c0.0614,-0.37149 0.0614,-0.75054 0,-1.12203v-9.1375c0,-5.99511 -4.9061,-10.95828 -10.89781,-10.95828zM48.73781,13.76h74.52437c2.20925,0 4.01781,1.80363 4.01781,4.07828v6.24172h-82.56v-6.24172c0,-2.27465 1.80856,-4.07828 4.01781,-4.07828zM44.72,30.96h82.56v106.64h-82.56zM86,58.48c-15.15813,0 -27.52,12.36187 -27.52,27.52c0,15.15813 12.36187,27.52 27.52,27.52c15.15813,0 27.52,-12.36187 27.52,-27.52c0,-15.15813 -12.36187,-27.52 -27.52,-27.52zM86,65.36c10.26447,0 18.70053,7.41444 20.33094,17.2h-7.06812c-1.54758,-5.9023 -6.89778,-10.32 -13.26281,-10.32c-6.36504,0 -11.71523,4.4177 -13.26281,10.32h-7.06812c1.63041,-9.78556 10.06647,-17.2 20.33094,-17.2zM86,79.12c3.84046,0 6.88,3.03954 6.88,6.88c0,3.84046 -3.03954,6.88 -6.88,6.88c-3.84046,0 -6.88,-3.03954 -6.88,-6.88c0,-3.84046 3.03954,-6.88 6.88,-6.88zM65.66906,89.44h7.06812c1.54758,5.9023 6.89778,10.32 13.26281,10.32c6.36504,0 11.71523,-4.4177 13.26281,-10.32h7.06812c-1.63041,9.78556 -10.06647,17.2 -20.33094,17.2c-10.26447,0 -18.70053,-7.41444 -20.33094,-17.2zM44.72,144.48h82.56v9.68172c0,2.27465 -1.80687,4.07828 -4.0111,4.07828h-74.53109c-2.20925,0 -4.01781,-1.79865 -4.01781,-4.07828zM75.68,147.92c-1.24059,-0.01754 -2.39452,0.63425 -3.01993,1.7058c-0.62541,1.07155 -0.62541,2.39684 0,3.46839c0.62541,1.07155 1.77935,1.72335 3.01993,1.7058h20.64c1.24059,0.01754 2.39452,-0.63425 3.01993,-1.7058c0.62541,-1.07155 0.62541,-2.39684 0,-3.46839c-0.62541,-1.07155 -1.77935,-1.72335 -3.01993,-1.7058z"></path></g></g></svg>
-                <strong>Pokemon Finder</strong>
-            </a>
-        </div>
-    </div>
-</header>
+<body id="home" class="custom">
+<!-- Wrapper -->
+<div class="wrapper">
 
-<main role="main">
-
-    <section class="jumbotron text-center">
+    <!-- NAV -->
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <h1>Album example</h1>
-            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-            <p>
-                <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-            </p>
+            <div class="navbar-header">
+
+                <a class="navbar-brand vertical-align" href="http://localhost:8080" >
+                    <img src="images/pokeball.svg" alt="Logo Pokemon Finder" class="logo-pokemon-finder inject-me">
+                    <span>Pokemon Finder</span>
+                </a>
+            </div>
+
         </div>
-    </section>
 
-    <div class="album py-5 bg-light">
-        <div class="container">
+    </nav>
+    <!-- /NAV -->
 
-            <div class="row">
+    <!-- MAIN-CONTENT -->
+    <div class="main-content">
 
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png" width="100%">
-                        <div class="card-body">
-                            <small class="text-muted">N° 025</small>
-                            <h5 class="card-title">Bulbasaur</h5>
-                            <p>When several of these POKéMON gather, their electricity could build and cause lightning storms.</p>
-                            <div class="d-flex align-items-left">
-                                <span class="badge badge-primary">Primary</span> <span class="badge badge-primary">Primary</span>
+        <div class="jumbotron">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
+                        <h2 class="title">Search Pokemon</h2>
+                        <form lang="es" id="form-search-pokemon" name="form-search-pokemon" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" role="form" data-toggle="validator" data-errors='{"match":"Los campos no coinciden", "minlength":"No es lo suficientemente largo"}' data-enable-shim="false">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" minlength="3" data-minlength="3" class="form-control" name="input-search" id="id-input-search" placeholder="pikachu" data-minlength-error="Se requiere al menos 3 caracteres" data-error="Este campo es obligatorio." autocomplete="off" required>
+                                    <span class="input-group-btn">
+                                        <button type="submit" id="btn-search-pokemon" class="btn btn-default" type="button">Search</button>
+                                    </span>
+                                </div>
+                                <div class="text-center hidden" id="msg-form-invalid">
+                                    <div class="has-error has-danger">
+                                        <div class="help-block with-errors">
+                                            <ul class="list-unstyled">
+                                                <li><strong>Los campos marcados en rojo son obligatorios.</strong></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+
+                        </form>
                     </div>
                 </div>
 
             </div>
         </div>
+
+        <div class="container">
+
+        </div>
+    </div>
+    <!-- /MAIN-CONTENT -->
+
+</div>
+<!-- /Wrapper -->
+
+<!-- FOOTER -->
+<footer >
+
+    <div class="row legals">
+        <div class="container">
+            <div class="text-center">
+                <p>&copy;Mex Delgado - Build with <span class="love">❤</span> - <a href="https://github.com/rudemex/pokemon-finder" target="_blank" >Visit my repo</a></p>
+            </div>
+        </div>
     </div>
 
-</main>
-
-<footer class="text-muted">
-    <div class="container">
-        <p class="float-right">
-            <a href="https://github.com/rudemex/pokemon-finder" target="_blank" >Visit my repo</a>
-        </p>
-        <!--<p>&copy;Mex Delgado - Build with <span class="love">❤</span></p>-->
-        <p>&copy;Fernando Russo - Build with <span class="love">❤</span></p>
-    </div>
 </footer>
-<!-- JS, Popper.js, and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- /FOOTER -->
+
+<div class="overlay" id="overlay-preload">
+    <img class="preloader" src="images/svg-loaders/tail-spin.svg" alt="">
+</div>
+
+<!-- SCRIPTS -->
+<script data-main="js/app" src="js/require.js"></script>
+<!-- /SCRIPTS -->
+
 </body>
 </html>

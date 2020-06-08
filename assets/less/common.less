@@ -1,0 +1,400 @@
+// COMMON TAGS // -------------------------------
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+	position: relative;
+    font-size:62.5%;
+    min-height: 100%;
+    height: 100%;
+    //height: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	//position: relative;
+    margin: 0 0; //@footerH-mobile; /* bottom = footer height */
+    background: @bgColor;
+    font-family: @baseFont;
+    color: @defaultTextColor;
+    .font-size(1.4);
+    //height: auto;
+    height: 100%;
+    overflow:visible;
+}
+
+code {
+    font-size: 80%;
+}
+
+strong {
+    font-weight: 700;
+}
+
+em {
+	font-style: italic;
+}
+
+a, button {
+    outline: 0;
+	.Transitions (all 0.7s ease);
+
+	&:focus {
+		outline: none !important;
+	}
+}
+
+a, a:link, a:active, a:visited {
+    outline: 0 !important;
+	color: @color-link;
+	font-weight: 400;
+}
+
+a:hover, a:focus {
+	color: @color-link-over;
+	text-decoration: none;
+    outline: 0;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    position:relative;
+    margin-bottom: 15px;
+    color: @color-blue;
+    strong{
+        font-weight: bold;
+    }
+
+    &.uppercase{
+        text-transform: uppercase;
+    }
+
+    &.lowercase{
+        text-transform: lowercase;
+    }
+}
+
+h1{
+    &.title{
+        .font-size(2.4);
+    }
+}
+
+h2{
+    &.title{
+        .font-size(2.1);
+    }
+}
+
+h3{
+    &.title{
+        .font-size(1.8);
+    }
+}
+
+h4{
+    &.title{
+        .font-size(1.5);
+    }
+}
+
+p{
+    .font-size(1.2);
+}
+
+.btn{
+    .font-size(1.4);
+    text-transform: uppercase;
+    border:2px solid @color-blue;
+    //padding: 8px 24px;
+    padding: 8px 8px;
+    //min-width: 126px;
+    min-width: 100px;
+    margin-bottom: 15px;
+    .RoundedShape(2px);
+    .Transitions (all 0.7s ease);
+
+    &.btn-default,
+    &.btn-primary{
+        background: @color-link;
+        border-color: @color-link;
+        color: @color-white;
+        text-transform: uppercase;
+        font-weight: bold;
+
+        &:hover,&:focus,&:active,&:hover&:active{
+            color: @color-white;
+            background: @color-link-over;
+            border-color: @color-link-over;
+        }
+
+    }
+}
+
+input{
+    .RoundedShape(0px);
+    .BoxShadow (none);
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.block {
+    display: block;
+    margin: 6px auto;
+}
+
+.allCaps {
+    text-transform: uppercase;
+}
+
+.no-padding{
+    padding:0px;
+}
+
+.no-margin{
+    margin:0px;
+}
+
+.no-padding-margin{
+    padding:0px;
+    margin:0px;
+}
+
+.text-center-forced{
+    text-align: center !important;
+}
+
+/* centered columns styles */
+//http://www.minimit.com/demos/bootstrap-3-responsive-centered-columns
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+.col-fixed {
+    /* custom width */
+    width:320px;
+}
+.col-min {
+    /* custom min width */
+    min-width:320px;
+}
+.col-max {
+    /* custom max width */
+    max-width:320px;
+}
+// ----------------------------------------------
+
+// COMMON STYLES // -----------------------------
+
+/*=============================
+=             NAV             =
+=============================*/
+.navbar{
+    min-height: 30px;
+    height: @navH-mobile;
+    border:none;
+    background: @color-red;
+    margin-bottom: 0px;
+    z-index: @zIndex-11;
+    .RoundedShape(0px);
+    //.Transitions (all 0.5s ease);
+
+    .navbar-header{
+
+        .navbar-brand{
+            margin: 5px 0px 5px 15px;
+            color: @color-white;
+            padding: 0px;
+
+            .logo-pokemon-finder{
+                width: 30px;
+                height: auto;
+                //max-width: 107px;
+                //max-height: 70px;
+                /*path{
+                    fill: @color-blue !important;
+                }*/
+            }
+            span{
+                margin-left: 10px;
+            }
+        }
+    }
+
+}
+
+/*------  End of NAV  -------*/
+.container{
+    .Transitions (all 0.5s ease);
+}
+
+.custom{
+	.wrapper {
+        min-height: 100%;
+		.main-content {
+		    padding: @navH-mobile 0px @footerH-mobile;
+		}
+	}
+}
+
+footer {
+    background:@color-battleship-grey;
+    position: relative;
+    margin-top: -@footerH-mobile;
+    left: 0;
+    bottom: 0;
+    color:@color-dark-grey;
+    font-family: @baseFont;
+    height: auto;
+    width: 100%;
+    .font-size(1.2);
+    padding:0px 15px;//15 15
+
+
+    .legals{
+        padding-bottom: 66px;
+        & > .container {
+            padding-right: 15px;
+            padding-left: 15px;
+            p{
+                margin: 10px 0px;
+                color: @color-white;
+                .love {
+                    color: @color-red-2;
+                }
+
+                a{
+                    color: @color-white;
+
+                    &:hover{
+                        color: @color-white;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.container .text-muted {
+    margin: 15px 0;
+    .font-size(1.2);
+}
+
+.disabled {
+	pointer-events: none;
+}
+
+.form-control{
+    .BoxShadow (none);
+    min-height: 40px;
+}
+
+.form-control:focus {
+    border-color: @color-input-focus;
+    box-shadow: none;
+}
+
+.has-error .form-control:focus {
+    box-shadow: none;
+}
+
+.input-l2 {
+	width: 80px !important;
+	text-align: center;
+}
+
+.input-l4 {
+	width: 100px !important;
+	text-align: center;
+}
+
+.is-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.is-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+* And with max cross-browser enabled.
+* Nobody should ever write this by hand.
+* Use a preprocesser with autoprefixing.
+*/
+.is-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.is-flex > [class*='col-'] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.overlay{
+    background:rgba(0,0,0,0.7);
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left:0px;
+    right:0px;
+    z-index: 11000;
+
+    .preloader{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        .Transform(translate(-50%, -50%));
+    }
+}
+// ----------------------------------------------

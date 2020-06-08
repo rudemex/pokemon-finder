@@ -1,0 +1,42 @@
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	.navbar{
+        height: @navH-desktop;
+        .navbar-header{
+            .navbar-brand{
+            	margin: 5px 0px;
+            }
+        }
+
+    }
+
+	footer {
+        margin-top: -@footerH-desktop;
+
+        .legals{
+            padding-bottom: 0px;
+        }
+    }
+
+    .custom{
+        .wrapper {
+            .main-content {
+            	padding-top: @navH-desktop;
+                padding-bottom: @footerH-desktop;
+            }
+        }
+    }
+
+    // HOME // --------------------------------------
+    #home {
+        .wrapper{
+            .main-content{
+                .container{
+
+                }
+            }
+        }
+    }
+    // ----------------------------------------------
+
+}

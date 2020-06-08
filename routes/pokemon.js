@@ -13,7 +13,6 @@ module.exports = function (app, signale) {
     const context = serverConfig.context;
     const pokeapi = servicesConfig.pokeapi;
 
-
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -93,12 +92,14 @@ module.exports = function (app, signale) {
      *          description: Error generico en el servidor
      */
     app.get(encodeURI(context + "/search"), (req, res) => {
+        signale.info('ENDPOINT SEARCH POKEMON');
+
         const search = req.query.search.toLowerCase();
 
         if (search !== null && search !== undefined) {
 
             searchPokemon(search).then( resp => {
-                signale.debug("RESPONSE: ",resp);
+                signale.debug("RESPONSE SEARCH POKEMON: ",resp);
 
                 if ( resp !== null ){
                     res.status(200).send( resp );
@@ -159,17 +160,18 @@ module.exports = function (app, signale) {
      *          description: Error generico en el servidor
      */
     app.get(encodeURI(context + "/pokemons"), (req, res) => {
+        signale.info('ENDPOINT GET ALL POKEMONS');
+
         const limit = req.query.limit || paramsConfig.limit;
         const offset = req.query.offset || paramsConfig.offset;
-        signale.info('ENDPOINT POKEMONS');
 
         if (limit !== null && limit !== undefined && offset !== null && offset !== undefined) {
             const url = encodeURI(`${pokeapi}/pokemon?limit=${ parseInt(limit) }&offset=${ parseInt(offset) }`);
             request(url,(error, response, body) => {
                 try {
                     if (!error && response.statusCode == 200 && body !== '') {
+                        signale.info('RESPONSE GET ALL POKEMONES');
                         const resp = JSON.parse(response.body);
-                        signale.success('GET ALL POKEMONES');
                         res.status(200).send( resp );
                     } else {
                         signale.error('error response: ', error);
@@ -218,8 +220,8 @@ module.exports = function (app, signale) {
      *          description: Error generico en el servidor
      */
     app.get(encodeURI(context + "/pokemon/:name"), (req, res) => {
+        signale.info('ENDPOINT GET POKEMON BY NAME');
         const name = req.params.name;
-        signale.info('ENDPOINT POKEMON BY NAME');
 
         if (name !== null && name !== undefined) {
             const url = encodeURI(`${pokeapi}/pokemon/${name}`);
@@ -227,10 +229,10 @@ module.exports = function (app, signale) {
                 try {
                     if (!error && response.statusCode == 200 && body !== '') {
                         const resp = JSON.parse(response.body);
-                        signale.success('GET POKEMON BY NAME/NRO POKEMON');
+                        signale.info('GET POKEMON BY NAME/NRO POKEMON');
 
                         getPokemonDescription(resp.species.url).then( respDescription => {
-                            signale.success(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
+                            signale.debug(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
                             let response_data = [];
 
                             response_data.push({
@@ -271,10 +273,10 @@ module.exports = function (app, signale) {
                 try {
                     if (!error && response.statusCode == 200 && body !== '') {
                         const resp = JSON.parse(response.body);
-                        signale.success('GET POKEMON BY NAME/NRO POKEMON');
+                        signale.info('RESPONSE GET POKEMON BY NAME/NRO POKEMON');
 
                         getPokemonDescription(resp.species.url).then( respDescription => {
-                            signale.success(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
+                            signale.debug(`GET DESCRIPTION POKEMON OF: ${resp.forms[0].name}/${resp.id}`);
                             let response_data = [];
                             response_data.push({
                                 "id": resp.id,
@@ -311,11 +313,11 @@ module.exports = function (app, signale) {
                 try {
                     if (!error && response.statusCode == 200 && body !== '') {
                         const resp = JSON.parse(response.body);
-                        signale.success('GET ALL POKEMONES');
+                        signale.info('GET ALL POKEMONES');
 
                         let dataFilter = functions.filterResponse(resp.results, 'name', name);
                         getDataPokemon(dataFilter).then( res => {
-                            signale.info("RESULT: ",res);
+                            signale.debug("RESULT SEARCH ADVANCE: ",res);
                             resolve(res);
                         });
 
@@ -338,7 +340,7 @@ module.exports = function (app, signale) {
         return new Promise((resolve, reject) => {
             request(url, (error, response, body) => {
                 const resp = JSON.parse(response.body);
-                signale.success('GET DESCRIPTION OF POKEMON');
+                signale.info('GET DESCRIPTION OF POKEMON');
                 if (!error && response && response.statusCode == 200) {
                     resolve(resp.flavor_text_entries[0].flavor_text.replace(/\r?\n|\f|\r/g, " "));
                 } else {
@@ -350,20 +352,21 @@ module.exports = function (app, signale) {
     }
 
     const getDataPokemon =  (data) => {
+        signale.info('GET DATA POKEMON');
         return new Promise( (resolve, reject) => {
             try{
                 let response_data = [];
                 data.map( (item,i) => {
                     signale.debug("POKEMON NAME: ",item.name);
                     searchPokemon(item.name).then( r => {
-                        console.log("R: ",r);
+                        signale.debug("RESPONSE SEARCH POKEMON: ",r);
                         response_data.push(r[0]);
                         return r[0];
                     }).catch( e => e);
                 });
 
                 setTimeout(() => {
-                    signale.success("DATA: ",response_data)
+                    signale.debug("RESPONSE DATA: ",response_data)
                     resolve(response_data)
                 },1500)
             }catch{

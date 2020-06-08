@@ -8,6 +8,7 @@ const swagger = require("./swagger");
 const {Signale} = require('signale');
 const pjson = require('./package.json');
 const cors = require('cors');
+const path = require('path');
 
 const optionsSignale={
     types:{
@@ -92,7 +93,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
+app.use(express.static(path.join(__dirname, '/assets')));
 /*app.all('*', function (req, res) {
     res.cookie('XSRF-TOKEN', req.csrfToken());
     res.locals.csrftoken = req.csrfToken();
@@ -102,6 +103,7 @@ const port = parseInt(serverConfig.port, 10) || 8080;
 routes(app, pjson.version, signale);
 
 app.listen(port, () => {
-    signale.success(`App running on port:`, port);
+    signale.success(`App running on port: ${port}`);
     signale.success(`Version: ${pjson.version}`);
+    signale.success(`Visit: http://localhost:${port}`);
 });

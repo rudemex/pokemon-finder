@@ -5,8 +5,8 @@
     "toConsole": false
   },
   "mochawesomeReporterOptions": {
-    "reportTitle": "Dashboard",
-    "reportPageTitle": "Dashboard",
+    "reportTitle": "Pokemon-Finder",
+    "reportPageTitle": "Pokemon-Finder",
     "charts": true,
     "code": false,
     "reportDir": "cypress/reports/mocha",

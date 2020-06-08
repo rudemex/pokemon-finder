@@ -4,7 +4,7 @@
 ## Swagger
 + Acceso a la documentación y testeo de las APIs: [url]/api-docs/
 * Para registrar los nuevos endpoints en swagger, se debe anotar los mismo con la
-anotation @swagger y completar un yamel con la información del mismo (ver ejemplo en pokemon.js).
+anotation @swagger y completar un yamel con la información del mismo (ver ejemplo en pokemon.spec.js).
 
 ## Variables de entorno
 
@@ -45,9 +45,21 @@ npm run local
 ```
 Ingrese a [http://localhost:8080](http://localhost:8080)
 
+# Testing
+Los unit test, integration test y E2E Test están realizados con la plataforma Cypress.
+```sh
+npm run test
+```
+
+Test serverless
+```sh
+npm run test:serverless
+```
+
+
 # Prueba de stress con Artillery.io
 Documentación [Artillery.io](https://artillery.io/docs/)
-```
+```sh
 npm install -g artillery
 ```
 

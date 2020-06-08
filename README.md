@@ -30,12 +30,17 @@ CONTEXT_NAME
 ## Ejecución
 Instalar dependencias del proyecto
 ```sh
+bower install
+```
+
+```sh
 npm install
 ```
 Para ejecutar el proyecto en el ambiente local, es decir en la pc del desarrollador se debe ejecutar:
 ```sh
 npm run local
 ```
+Ingrese a [http://localhost:8080](http://localhost:8080)
 
 # Prueba de stress con Artillery.io
 Documentación [Artillery.io](https://artillery.io/docs/)
@@ -43,8 +48,8 @@ Documentación [Artillery.io](https://artillery.io/docs/)
 npm install -g artillery
 ```
 
-```
-artillery quick --count 20 -n 20 http://localhost:8080/api/<endpoint>
+```sh
+artillery quick --count 20 -n 20 http://localhost:8080/api/pokemon/bulbasaur
 ```
 
 # Referencia

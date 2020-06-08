@@ -191,6 +191,12 @@ p {
   background: #CC0000;
   border-color: #CC0000;
 }
+.btn.btn-default:disabled,
+.btn.btn-primary:disabled,
+.btn.btn-default.disabled,
+.btn.btn-primary.disabled {
+  opacity: 0.5;
+}
 input {
   -webkit-border-radius: 0px !important;
   -moz-border-radius: 0px !important;
@@ -429,6 +435,24 @@ footer .legals > .container p a:hover {
 #home .wrapper .main-content .jumbotron .container h2.title {
   margin: 0px 0px 15px;
   color: #292b2f;
+}
+#home .wrapper .main-content .jumbotron .container form .form-group {
+  margin-bottom: 0px;
+}
+#home .wrapper .main-content .jumbotron .container form .form-group .input-group input[type=text] {
+  margin-bottom: 5px;
+}
+#home .wrapper .main-content .jumbotron .container form .form-group .input-group .input-group-btn #btn-search-pokemon {
+  margin-bottom: 5px;
+}
+#home .wrapper .main-content .jumbotron .container form .form-group #msg-form-invalid {
+  margin-top: 15px;
+}
+#home .wrapper .main-content .jumbotron .container form .form-group #msg-form-invalid .has-error .help-block.with-errors {
+  margin: 0px;
+}
+#home .wrapper .main-content .jumbotron .container form .form-group #msg-form-invalid .has-error .help-block.with-errors .list-unstyled {
+  margin: 0px;
 }
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {

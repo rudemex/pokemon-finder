@@ -150,6 +150,7 @@ define([
 					$('#msg-form-invalid').removeClass('hidden');
 				} else {
 					console.log('form-search-pokemon VALID');
+					$('#overlay-preload').fadeIn();
 					$('#msg-form-invalid').addClass('hidden');
 					e.preventDefault();
 
@@ -171,7 +172,7 @@ define([
 						}else{
 							console.log("Ocurrio un error al registrarte, por favor intentelo nuevamente mas tarde.");
 						}*/
-
+						$('#overlay-preload').fadeOut();
 						$('#btn-search-pokemon').attr("disabled", false);
 					});
 				}

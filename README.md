@@ -28,7 +28,10 @@ CONTEXT_NAME
 ```
 
 ## Ejecución
-Instalar dependencias del proyecto
+>Este proyecto utiliza Bower, en caso de no tenerlo instalado correr el comando `npm install -g bower`
+
+Instalar dependencias del proyecto. 
+
 ```sh
 bower install
 ```

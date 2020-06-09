@@ -41,11 +41,11 @@
 
     <!-- NAV -->
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav data-cy="header" class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
 
-                <a class="navbar-brand vertical-align" href="http://localhost:8080" >
+                <a data-cy="logo" class="navbar-brand vertical-align" href="http://localhost:8080" >
                     <img src="images/pokeball.svg" alt="Logo Pokemon Finder" class="logo-pokemon-finder inject-me">
                     <span>Pokemon Finder</span>
                 </a>
@@ -65,15 +65,15 @@
                 <div class="row">
                     <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
                         <h2 class="title">Search Pokemon</h2>
-                        <form lang="es" id="form-search-pokemon" name="form-search-pokemon" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" role="form" data-toggle="validator" data-errors='{"match":"Los campos no coinciden", "minlength":"No es lo suficientemente largo"}' data-enable-shim="false">
+                        <form data-cy="form-search" lang="es" id="form-search-pokemon" name="form-search-pokemon" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" role="form" data-toggle="validator" data-errors='{"match":"Los campos no coinciden", "minlength":"No es lo suficientemente largo"}' data-enable-shim="false">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" minlength="3" data-minlength="3" class="form-control" name="input-search" id="id-input-search" placeholder="pikachu" data-minlength-error="Se requiere al menos 3 caracteres" data-error="Este campo es obligatorio." autocomplete="off" required>
+                                    <input data-cy="input-search" type="text" minlength="3" data-minlength="3" class="form-control" name="input-search" id="id-input-search" placeholder="pikachu" data-minlength-error="Se requiere al menos 3 caracteres" data-error="Este campo es obligatorio." autocomplete="off" required>
                                     <span class="input-group-btn">
-                                        <button type="submit" id="btn-search-pokemon" class="btn btn-default" type="button">Search</button>
+                                        <button data-cy="btn-search" type="submit" id="btn-search-pokemon" class="btn btn-default" type="button">Search</button>
                                     </span>
                                 </div>
-                                <div class="text-center hidden" id="msg-form-invalid">
+                                <div class="text-center hidden" data-cy="msg-error" id="msg-form-invalid">
                                     <div class="has-error has-danger">
                                         <div class="help-block with-errors">
                                             <ul class="list-unstyled">
@@ -103,7 +103,7 @@
 <!-- /Wrapper -->
 
 <!-- FOOTER -->
-<footer >
+<footer data-cy="footer">
 
     <div class="row legals">
         <div class="container">
@@ -116,7 +116,7 @@
 </footer>
 <!-- /FOOTER -->
 
-<div class="overlay" id="overlay-preload">
+<div class="overlay" id="overlay-preload" data-cy="overlay-load">
     <img class="preloader" src="images/svg-loaders/tail-spin.svg" alt="">
 </div>
 

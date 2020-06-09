@@ -4,7 +4,8 @@
   "description": "Pokemon finder",
   "private": true,
   "scripts": {
-    "local": " SET SERVER_PORT=8080  && nodemon run start-server",
+    "local": " nodemon run start-server",
+    "local2": "SET SERVER_PORT=8080  && nodemon run start-server",
     "mock-server": "node mock/build-data && mock-json-server data.json --port 3003",
     "start-server": "nodemon server.js",
     "start": "nodemon --inspect=0.0.0.0:9228 ./server.js",

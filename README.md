@@ -28,7 +28,7 @@ CONTEXT_NAME
 ```
 
 ## Ejecución
->Este proyecto utiliza Bower, en caso de no tenerlo instalado correr el comando `npm install -g bower`
+>Este proyecto utiliza Bower, en caso de no tenerlo instalado correr el comando `npm install -g bower` con permiso de administrador.
 
 Instalar dependencias del proyecto. 
 
@@ -44,6 +44,8 @@ Para ejecutar el proyecto en el ambiente local, es decir en la pc del desarrolla
 npm run local
 ```
 Ingrese a [http://localhost:8080](http://localhost:8080)
+
+> Es probable que algunos comandos haya que ajustarlos dependiendo el SO.
 
 # Testing
 Los unit test, integration test y E2E Test están realizados con la plataforma Cypress.

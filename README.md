@@ -2,7 +2,7 @@
 [![badge](https://img.shields.io/static/v1.svg?style=flat-square&label=Node&message=v10.15.1&color=brightgreen&logo=node.js)](https://nodejs.org/es/ "Node.js website")
 [![badge](https://img.shields.io/static/v1.svg?style=flat-square&label=Npm&message=v6.14.5&color=brightgreen&logo=npm)](https://www.npmjs.com/ "Npm website")
 ## Swagger
-+ Acceso a la documentación y testeo de las APIs: [url]/api-docs/
++ Acceso a la documentación y testeo de las APIs: http://localhost:8080/api-docs/
 * Para registrar los nuevos endpoints en swagger, se debe anotar los mismo con la
 anotation @swagger y completar un yamel con la información del mismo (ver ejemplo en pokemon.spec.js).
 

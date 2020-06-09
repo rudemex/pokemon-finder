@@ -454,6 +454,17 @@ footer .legals > .container p a:hover {
 #home .wrapper .main-content .jumbotron .container form .form-group #msg-form-invalid .has-error .help-block.with-errors .list-unstyled {
   margin: 0px;
 }
+#home .wrapper .main-content .container #list-of-results .item img {
+  width: 100%;
+  height: auto;
+}
+#home .wrapper .main-content .container #list-of-results .item .caption small {
+  font-weight: 600;
+}
+#home .wrapper .main-content .container #list-of-results .item .caption h3 {
+  text-transform: capitalize;
+  margin-top: 5px;
+}
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   html {

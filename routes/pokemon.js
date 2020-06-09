@@ -102,10 +102,10 @@ module.exports = function (app, signale) {
                 signale.debug("RESPONSE SEARCH POKEMON: ",resp);
 
                 if ( resp !== null ){
-                    res.status(200).send( resp );
+                    res.status(200).send( JSON.stringify(resp) );
                 }else{
                     searchAdvancePokemon(search).then( resp => {
-                        res.status(200).send( resp );
+                        res.status(200).send( JSON.stringify(resp) );
                     }).catch( error => {
                         signale.error(`Error: ${error}`);
                         res.status(409).send({error_message: `Error inesperado: ${error}`});
@@ -172,7 +172,7 @@ module.exports = function (app, signale) {
                     if (!error && response.statusCode == 200 && body !== '') {
                         signale.info('RESPONSE GET ALL POKEMONES');
                         const resp = JSON.parse(response.body);
-                        res.status(200).send( resp );
+                        res.status(200).send( JSON.stringify(resp) );
                     } else {
                         signale.error('error response: ', error);
                         res.status(409).send(error);
@@ -243,7 +243,7 @@ module.exports = function (app, signale) {
                                 "types": resp.types.map( item => item.type.name )
                             });
                             //res.status(200).send( xss( JSON.stringify(response_data) ) );
-                            res.status(200).send( response_data );
+                            res.status(200).send( JSON.stringify(response_data) );
                         }).catch( error => {
                             signale.error('error 1: ', error);
                             res.status(409).send({error_message: `Error inesperado: ${error}`});

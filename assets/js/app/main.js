@@ -152,6 +152,7 @@ define([
 					console.log('form-search-pokemon VALID');
 					$('#overlay-preload').fadeIn();
 					$('#msg-form-invalid').addClass('hidden');
+					$("#list-of-results").empty();
 					e.preventDefault();
 
 					$('#btn-search-pokemon').attr("disabled", true);
@@ -163,15 +164,36 @@ define([
 					console.log('params:',params);
 
 					$.get(md.server + '/api/search?search='+params.search, (response) => {
-						console.log('response: ' + JSON.stringify(response));
+						var responseData = JSON.parse(response);
+						console.log(`Response: ${response}`);
+						$('form[name=form-search-pokemon]')[0].reset();
 
-						/*if(response.status == "success"){
+						if( responseData.length){
 
-							$('form[name=form-search-pokemon]')[0].reset();
+							responseData.forEach( (item)=> {
+								var types='';
+								item.types.forEach( (type) => {
+									types+= `<span class="badge badge-primary">${type}</span>`;
+								})
+
+								$("#list-of-results").append(`<div class="col-sm-6 col-md-4 item">\
+								<div class="thumbnail">\
+									<img class="img-responsive" width="100%" src="${item.image}" onerror="this.src='images/image-not-found.png'"   alt="Pokemon N° ${item.id} - ${item.name}" title="Pokemon N° ${item.id} - ${item.name}">\
+									<div class="caption">\
+										<small>N° ${item.id}</small>\
+										<h3>${item.name}</h3>\
+										<p>${item.description}.</p>\
+										<p>${types}</p>\
+									</div>\
+								</div>\
+							</div>`);
+							});
 
 						}else{
-							console.log("Ocurrio un error al registrarte, por favor intentelo nuevamente mas tarde.");
-						}*/
+							console.log("Ocurrio un error, por favor intentelo nuevamente mas tarde.");
+							$("#list-of-results").append( `<div class="col-xs-12 text-center"><h4>No se encontro el pokemon: ${params.search}</h4></div>`);
+						}
+
 						$('#overlay-preload').fadeOut();
 						$('#btn-search-pokemon').attr("disabled", false);
 					});

@@ -47,11 +47,12 @@ Ingrese a [http://localhost:8080](http://localhost:8080)
 
 # Testing
 Los unit test, integration test y E2E Test están realizados con la plataforma Cypress.
+
 ```sh
 npm run test
 ```
 
-Test serverless
+Test serverless con reporte
 ```sh
 npm run test:serverless
 ```
